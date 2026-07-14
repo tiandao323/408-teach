@@ -66,7 +66,7 @@ Default flow for one section:
 1. Inspect project materials with `materials` when the project is new or ambiguous.
 2. Use `doctor` after adding or bootstrapping a textbook. Stop on fatal or error diagnostics.
 3. Use `extract` or `continue`. If a keyword has multiple matches, show choices and ask which section to use.
-4. Read [references/lecture-quality.md](references/lecture-quality.md), [references/408os-importance.md](references/408os-importance.md), and [references/mixed-teaching-style.md](references/mixed-teaching-style.md).
+4. Read [references/lecture-quality.md](references/lecture-quality.md), [references/408os-importance.md](references/408os-importance.md), [references/mixed-teaching-style.md](references/mixed-teaching-style.md), and [references/stuck-rescue.md](references/stuck-rescue.md).
 5. Align the extracted section with the syllabus, `https://www.408os.cn/analysis` exam-frequency data, and relevant past-paper PDFs when available.
 6. Use the PDF as authority when `source_authority` is `pdf`.
 7. Write one UTF-8 Markdown draft in source order. Preserve complete extracted source unless explicitly correcting OCR from PDF evidence.
@@ -131,6 +131,26 @@ Use two top-level titles for new lectures: first `# 408考试大纲`, then one s
 ...
 #### 易错点
 ...
+
+## 卡点救援与复盘
+
+### 本节常见卡点
+- 卡点 1：...
+- 卡点 2：...
+
+### 如果你不懂，先问自己
+1. 我是不懂名词，还是不懂过程？
+2. 我是分不清 A 和 B，还是不知道题目怎么考？
+3. 我是从哪一步开始断的？
+
+### 救援讲解记录
+| 卡点 | 原因 | 换一种讲法 | 检验题 |
+|---|---|---|---|
+| 等你提问后记录 | 课堂反馈 | 换图、换例子或换题目重讲 | 一道最小检验题 |
+
+### 最小检验题
+1. ...
+2. ...
 ```
 
 Apply this block to the target heading and every heading present in the extracted source, in the same order. Use two level-one headings only: `# 408考试大纲` and the target section title. Downgrade descendant source headings when necessary.
@@ -143,6 +163,8 @@ Every source heading must have:
 - a heading beginning with `易错点`.
 
 Depth is not uniform. Follow `references/mixed-teaching-style.md`: S/A knowledge points use teacher-style zero-to-mechanism explanation; B points use problem-solving speed-run explanation; C/D points use recognition-only treatment. Do not delete low-frequency syllabus items, but do not spend high-frequency time on them.
+
+Every new lecture must end with `卡点救援与复盘` following `references/stuck-rescue.md`. This section is printable and is also where later rescue explanations are appended when the user reports a stuck point.
 
 Do not restore old global sections such as `学习目标`, `典型例题`, `本节自测`, or `一分钟总结`. Put examples, summaries, and真题提示 next to the textbook passage they explain.
 

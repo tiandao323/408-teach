@@ -14,6 +14,13 @@ INLINE_EXPLANATION = "核心概念与深度讲解"
 SYLLABUS_TITLE = "408考试大纲"
 FREQUENCY_ANALYSIS = "408os考频分析"
 IMPORTANCE_JUDGMENT = "重要性判断"
+STUCK_RESCUE = "卡点救援与复盘"
+STUCK_RESCUE_HEADINGS = [
+    "本节常见卡点",
+    "如果你不懂，先问自己",
+    "救援讲解记录",
+    "最小检验题",
+]
 HIGH_TOUCH_HEADINGS = [
     "你可能会卡在哪里",
     "从零推导",
@@ -213,6 +220,14 @@ def validate_lecture(
 
     if section_title and expected_section and not _title_contains_section(section_title, expected_section):
         errors.append(f"章节一级标题未包含目标章节号：{expected_section}")
+
+    if requires_importance:
+        heading_titles = {title for _, _, title in headings}
+        if _heading_key(STUCK_RESCUE) not in heading_titles:
+            errors.append("讲义缺少卡点救援与复盘")
+        for required_heading in STUCK_RESCUE_HEADINGS:
+            if _heading_key(required_heading) not in heading_titles:
+                errors.append(f"卡点救援与复盘缺少栏目：{required_heading}")
 
     if source_content is not None:
         source_headings = _source_headings(source_content.splitlines())

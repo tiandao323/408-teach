@@ -68,6 +68,29 @@ SYLLABUS_PREFIX = """# 408考试大纲
 """
 
 
+RESCUE_BLOCK = """
+## 卡点救援与复盘
+
+### 本节常见卡点
+- 卡点 1：第一节的抽象对象和实现细节容易混在一起。
+- 卡点 2：子节只需保底识别，不要误当成高频深挖点。
+
+### 如果你不懂，先问自己
+1. 我是不懂名词，还是不懂过程？
+2. 我是分不清 A 和 B，还是不知道题目怎么考？
+3. 我是从哪一步开始断的？
+
+### 救援讲解记录
+| 卡点 | 原因 | 换一种讲法 | 检验题 |
+|---|---|---|---|
+| 等你提问后记录 | 课堂反馈 | 换图、换例子或换题目重讲 | 一道最小检验题 |
+
+### 最小检验题
+1. 说出第一节最核心的对象。
+2. 判断子节在本节中属于深讲还是识别层级。
+"""
+
+
 def add_importance_judgments(lecture: str) -> str:
     marker = "### 核心概念与深度讲解"
     first = "### 重要性判断\n- 等级：S\n- 依据：408os 高频，大纲核心。\n- 学习策略：深讲\n\n"
@@ -85,7 +108,7 @@ class LectureValidationTests(unittest.TestCase):
         )
 
     def test_accepts_syllabus_preface_as_first_top_level_heading(self):
-        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE)
+        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE) + RESCUE_BLOCK
 
         self.assertEqual(
             validate_lecture(lecture, "1.1", source_content=SOURCE),
@@ -93,26 +116,33 @@ class LectureValidationTests(unittest.TestCase):
         )
 
     def test_rejects_new_format_without_frequency_analysis(self):
-        lecture = "# 408考试大纲\n\n本节对应大纲。\n\n" + add_importance_judgments(VALID_LECTURE)
+        lecture = "# 408考试大纲\n\n本节对应大纲。\n\n" + add_importance_judgments(VALID_LECTURE) + RESCUE_BLOCK
 
         errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
 
         self.assertTrue(any("408os 考频分析" in error for error in errors))
 
     def test_rejects_new_format_without_importance_judgment(self):
-        lecture = SYLLABUS_PREFIX + VALID_LECTURE
+        lecture = SYLLABUS_PREFIX + VALID_LECTURE + RESCUE_BLOCK
 
         errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
 
         self.assertTrue(any("重要性判断" in error for error in errors))
 
     def test_rejects_new_format_without_mixed_style_headings(self):
-        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE)
+        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE) + RESCUE_BLOCK
         lecture = lecture.replace("#### 从零推导\n从测试需求推出第一节定义。\n", "")
 
         errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
 
         self.assertTrue(any("从零推导" in error for error in errors))
+
+    def test_rejects_new_format_without_stuck_rescue(self):
+        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE)
+
+        errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
+
+        self.assertTrue(any("卡点救援" in error for error in errors))
 
     def test_rejects_two_top_level_headings_without_syllabus_preface(self):
         lecture = "# 临时说明\n\n不是大纲。\n\n" + VALID_LECTURE
