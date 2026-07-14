@@ -6,7 +6,7 @@ Use this workflow when the user wants systematic 408 self-study, syllabus alignm
 
 1. Locate the subject in `materials`.
 2. Read the syllabus file for the current subject area. Extract only the relevant syllabus bullets.
-3. Read `references/408os-importance.md`, then use `https://www.408os.cn/analysis` to identify relevant knowledge-point frequency and assign S/A/B/C/D levels.
+3. Read `references/408os-importance.md` and `references/mixed-teaching-style.md`, then use `https://www.408os.cn/analysis` to identify relevant knowledge-point frequency and assign S/A/B/C/D levels.
 4. Use `extract` or `continue` to get the textbook section.
 5. If `source_authority` is `pdf`, use the PDF to verify suspicious OCR, formulas, tables, figure captions, and any passage the user says is wrong.
 6. For conceptual figures, understand the PDF figure and redraw it in the lecture with Mermaid, a table, ASCII art, or a concise text diagram instead of linking the textbook image file.
@@ -34,8 +34,8 @@ Prefer concrete decision rules over broad slogans. Examples:
 
 Use depth proportional to importance:
 
-- S/A: full mechanism-level explanation.
-- B: speed-run support explanation.
+- S/A: teacher-style zero-to-mechanism explanation.
+- B: speed-run support explanation aimed at solving questions.
 - C/D: concept-card or recognition-only treatment, never a long detour.
 
 ## Past-Paper Use

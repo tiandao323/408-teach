@@ -23,8 +23,14 @@ VALID_LECTURE = """# 1.1 第一节
 ## 这不是教材章节标题
 
 ### 核心概念与深度讲解
-#### 这段在说什么
-解释第一节。
+#### 你可能会卡在哪里
+第一节容易卡在抽象层和实现层混在一起。
+#### 从零推导
+从测试需求推出第一节定义。
+#### 机制拆解
+拆清第一节的对象、边界和流程。
+#### 例子跑通
+用一个测试例子跑通第一节。
 #### 408 怎么考
 考查第一节定义。
 #### 易错点
@@ -39,8 +45,10 @@ VALID_LECTURE = """# 1.1 第一节
 子节原文。
 
 ### 核心概念与深度讲解
-#### 这段在说什么
-解释子节。
+#### 最低掌握
+知道子节定义即可。
+#### 看到题怎么处理
+看到子节名词时先识别它属于第一节。
 #### 408 怎么考
 考查子节定义。
 #### 易错点
@@ -97,6 +105,14 @@ class LectureValidationTests(unittest.TestCase):
         errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
 
         self.assertTrue(any("重要性判断" in error for error in errors))
+
+    def test_rejects_new_format_without_mixed_style_headings(self):
+        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE)
+        lecture = lecture.replace("#### 从零推导\n从测试需求推出第一节定义。\n", "")
+
+        errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
+
+        self.assertTrue(any("从零推导" in error for error in errors))
 
     def test_rejects_two_top_level_headings_without_syllabus_preface(self):
         lecture = "# 临时说明\n\n不是大纲。\n\n" + VALID_LECTURE

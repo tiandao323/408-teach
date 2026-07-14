@@ -66,7 +66,7 @@ Default flow for one section:
 1. Inspect project materials with `materials` when the project is new or ambiguous.
 2. Use `doctor` after adding or bootstrapping a textbook. Stop on fatal or error diagnostics.
 3. Use `extract` or `continue`. If a keyword has multiple matches, show choices and ask which section to use.
-4. Read [references/lecture-quality.md](references/lecture-quality.md) and [references/408os-importance.md](references/408os-importance.md).
+4. Read [references/lecture-quality.md](references/lecture-quality.md), [references/408os-importance.md](references/408os-importance.md), and [references/mixed-teaching-style.md](references/mixed-teaching-style.md).
 5. Align the extracted section with the syllabus, `https://www.408os.cn/analysis` exam-frequency data, and relevant past-paper PDFs when available.
 6. Use the PDF as authority when `source_authority` is `pdf`.
 7. Write one UTF-8 Markdown draft in source order. Preserve complete extracted source unless explicitly correcting OCR from PDF evidence.
@@ -100,11 +100,13 @@ Use two top-level titles for new lectures: first `# 408考试大纲`, then one s
 - 学习策略：深讲 / 标准讲 / 速通 / 概念卡片 / 保底识别
 
 ### 核心概念与深度讲解
-#### 这段在说什么
+#### 你可能会卡在哪里
 ...
-#### 为什么需要它
+#### 从零推导
 ...
-#### 直观例子
+#### 机制拆解
+...
+#### 例子跑通
 ...
 #### 408 怎么考
 ...
@@ -121,7 +123,9 @@ Use two top-level titles for new lectures: first `# 408考试大纲`, then one s
 - 学习策略：深讲 / 标准讲 / 速通 / 概念卡片 / 保底识别
 
 ### 核心概念与深度讲解
-#### 这段在说什么
+#### 最低掌握
+...
+#### 看到题怎么处理
 ...
 #### 408 怎么考
 ...
@@ -138,7 +142,7 @@ Every source heading must have:
 - a heading named `408 怎么考`;
 - a heading beginning with `易错点`.
 
-Depth is not uniform. S/A knowledge points get mechanism-level explanation; B points get speed-run support explanation; C/D points get concept-card or recognition-only treatment. Do not delete low-frequency syllabus items, but do not spend high-frequency time on them.
+Depth is not uniform. Follow `references/mixed-teaching-style.md`: S/A knowledge points use teacher-style zero-to-mechanism explanation; B points use problem-solving speed-run explanation; C/D points use recognition-only treatment. Do not delete low-frequency syllabus items, but do not spend high-frequency time on them.
 
 Do not restore old global sections such as `学习目标`, `典型例题`, `本节自测`, or `一分钟总结`. Put examples, summaries, and真题提示 next to the textbook passage they explain.
 

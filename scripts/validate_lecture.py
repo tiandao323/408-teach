@@ -14,6 +14,21 @@ INLINE_EXPLANATION = "核心概念与深度讲解"
 SYLLABUS_TITLE = "408考试大纲"
 FREQUENCY_ANALYSIS = "408os考频分析"
 IMPORTANCE_JUDGMENT = "重要性判断"
+HIGH_TOUCH_HEADINGS = [
+    "你可能会卡在哪里",
+    "从零推导",
+    "机制拆解",
+    "例子跑通",
+]
+B_LEVEL_HEADINGS = [
+    "一句话定位",
+    "和高频点的关系",
+    "看到题怎么处理",
+]
+LOW_TOUCH_HEADINGS = [
+    "最低掌握",
+    "看到题怎么处理",
+]
 PLACEHOLDER_PATTERNS = [
     re.compile(r"\b(?:TODO|TBD)\b", re.IGNORECASE),
     re.compile(r"待补充|待完善"),
@@ -153,6 +168,20 @@ def _heading_body(
     return "\n".join(lines[start:end]).strip()
 
 
+def _importance_level(text: str) -> Optional[str]:
+    match = re.search(r"等级\s*[:：]\s*([SABCD])", text, re.IGNORECASE)
+    return match.group(1).upper() if match else None
+
+
+def _missing_required_headings(text: str, required: List[str]) -> List[str]:
+    headings = {title for _, _, title in _headings(text.splitlines())}
+    return [
+        title
+        for title in required
+        if _heading_key(title) not in headings
+    ]
+
+
 def validate_lecture(
     content: str,
     expected_section: Optional[str] = None,
@@ -221,14 +250,19 @@ def validate_lecture(
                     None,
                 )
                 if requires_importance:
+                    level: Optional[str] = None
                     if importance is None:
                         errors.append(f"教材标题后缺少重要性判断：{title}")
                     else:
                         importance_text = _heading_body(segment_lines, segment_headings, importance)
                         if not importance_text:
                             errors.append(f"重要性判断为空：{title}")
-                        elif "等级" not in importance_text:
+                        else:
+                            level = _importance_level(importance_text)
+                        if "等级" not in importance_text:
                             errors.append(f"重要性判断缺少等级：{title}")
+                        elif level is None:
+                            errors.append(f"重要性判断等级必须是 S/A/B/C/D：{title}")
                         if explanation is not None and importance[0] > explanation[0]:
                             errors.append(f"重要性判断必须放在深度讲解前：{title}")
                 if explanation is None:
@@ -248,6 +282,18 @@ def validate_lecture(
                     errors.append(f"就地深度讲解缺少 408 考法：{title}")
                 if not re.search(r"^#{3,6}\s+易错点", explanation_text, re.MULTILINE):
                     errors.append(f"就地深度讲解缺少易错点：{title}")
+                if requires_importance and importance is not None:
+                    importance_text = _heading_body(segment_lines, segment_headings, importance)
+                    level = _importance_level(importance_text)
+                    required_headings: List[str] = []
+                    if level in {"S", "A"}:
+                        required_headings = HIGH_TOUCH_HEADINGS
+                    elif level == "B":
+                        required_headings = B_LEVEL_HEADINGS
+                    elif level in {"C", "D"}:
+                        required_headings = LOW_TOUCH_HEADINGS
+                    for missing in _missing_required_headings(explanation_text, required_headings):
+                        errors.append(f"{level}级讲解缺少栏目 {missing}：{title}")
 
     if any(pattern.search(content) for pattern in PLACEHOLDER_PATTERNS):
         errors.append("讲义中仍有未解决的占位内容")
