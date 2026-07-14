@@ -1,0 +1,53 @@
+# 408 Exam-Oriented Workflow
+
+Use this workflow when the user wants systematic 408 self-study, syllabus alignment, past-paper comparison, weak-point review, or a continuation plan.
+
+## Section Learning Loop
+
+1. Locate the subject in `materials`.
+2. Read the syllabus file for the current subject area. Extract only the relevant syllabus bullets.
+3. Use `extract` or `continue` to get the textbook section.
+4. If `source_authority` is `pdf`, use the PDF to verify suspicious OCR, formulas, tables, figure captions, and any passage the user says is wrong.
+5. For conceptual figures, understand the PDF figure and redraw it in the lecture with Mermaid, a table, ASCII art, or a concise text diagram instead of linking the textbook image file.
+6. Look for registered past-paper PDFs whose title matches the chapter or topic. Use them to identify question styles and traps; do not pretend every section has a matching real question if none is found.
+7. Generate the inline lecture following the lecture contract.
+8. Run `finalize`; fix validation errors before advancing progress.
+
+## Lecture Emphasis
+
+For each source heading, explain:
+
+- what problem this concept solves;
+- how the mechanism works at the hardware/software boundary;
+- which conditions make a formula or rule valid;
+- how 408 tends to ask about it;
+- what neighboring concept is most easily confused with it.
+
+Prefer concrete decision rules over broad slogans. Examples:
+
+- For cache mapping, state how to split address bits and when conflict misses appear.
+- For floating point, state normalization, exponent bias, rounding, and overflow/underflow boundaries.
+- For pipeline hazards, identify producer/consumer timing before giving nop or forwarding conclusions.
+- For I/O, distinguish program query, interrupt, DMA, bus transaction, and CPU involvement.
+
+## Past-Paper Use
+
+Past-paper PDFs are evidence, not decoration.
+
+- If a paper is available, inspect the relevant topic before writing `408 怎么考`.
+- Summarize question patterns; do not copy long copyrighted passages.
+- Link a topic to a paper by filename and topic, not by invented year or question number unless the paper itself clearly provides it.
+- If no relevant past-paper file is registered, write exam cues from syllabus and textbook structure, and say that no registered past-paper match was found.
+
+## Mistake and Review Loop
+
+When the user submits answers or says a topic is weak:
+
+1. Identify the smallest concept responsible for the error.
+2. Add a short mistake note near the corresponding lecture or future `mistakes.jsonl` slot if the project has a heavy index.
+3. Re-teach the concept using a different representation: timeline, address-bit split, data path, state machine, or formula derivation.
+4. Ask one targeted check question before moving on.
+
+## Heavy Index Fallback
+
+If `.408-index/` exists, use it to retrieve chunks, syllabus mappings, questions, and mistakes before generating new content. If it does not exist, use the registered materials and normal section extraction. The absence of a heavy index should not block learning.

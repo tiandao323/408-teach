@@ -1,0 +1,4 @@
+interface:
+  display_name: "408 Teach"
+  short_description: "408考研教材、考纲、真题自学总控"
+  default_prompt: "Use $408-teach to continue my 408 self-study from the registered materials, aligning the textbook section with the syllabus and past papers."
