@@ -66,11 +66,12 @@ Default flow for one section:
 1. Inspect project materials with `materials` when the project is new or ambiguous.
 2. Use `doctor` after adding or bootstrapping a textbook. Stop on fatal or error diagnostics.
 3. Use `extract` or `continue`. If a keyword has multiple matches, show choices and ask which section to use.
-4. Read [references/lecture-quality.md](references/lecture-quality.md).
-5. Align the extracted section with the syllabus and relevant past-paper PDFs when available.
+4. Read [references/lecture-quality.md](references/lecture-quality.md) and [references/408os-importance.md](references/408os-importance.md).
+5. Align the extracted section with the syllabus, `https://www.408os.cn/analysis` exam-frequency data, and relevant past-paper PDFs when available.
 6. Use the PDF as authority when `source_authority` is `pdf`.
 7. Write one UTF-8 Markdown draft in source order. Preserve complete extracted source unless explicitly correcting OCR from PDF evidence.
-8. Run `finalize`. Fix every reported issue and rerun until it passes.
+8. For every source heading, assign an S/A/B/C/D importance level and adjust explanation depth accordingly.
+9. Run `finalize`. Fix every reported issue and rerun until it passes.
 
 ## Lecture Contract
 
@@ -81,11 +82,22 @@ Use two top-level titles for new lectures: first `# 408考试大纲`, then one s
 
 本讲义对应的 408 大纲条目。比如讲解 1.3 计算机系统层次结构时，先放“计算机组成原理 第一章 计算机系统概述”相关大纲。
 
+## 408os 考频分析
+
+- 数据范围：2009-2026，共 18 年真题统计。
+- 本节相关知识点：列出知识点、等级 S/A/B/C/D、题量、分值、考察年份数。
+- 本节讲解策略：说明哪些深讲，哪些速通，哪些只做保底识别。
+
 # 1.3 章节标题
 
 ## 教材原文
 
 按 408 大纲引用教材父节原文，完整保留被引用的教材段落，或按 PDF 证据修正 OCR。
+
+### 重要性判断
+- 等级：S/A/B/C/D
+- 依据：408os 考频、408 大纲位置、真题/章节连接关系
+- 学习策略：深讲 / 标准讲 / 速通 / 概念卡片 / 保底识别
 
 ### 核心概念与深度讲解
 #### 这段在说什么
@@ -103,6 +115,11 @@ Use two top-level titles for new lectures: first `# 408考试大纲`, then one s
 
 按 408 大纲引用该子标题下的教材原文，完整保留被引用的教材段落，或按 PDF 证据修正 OCR。
 
+### 重要性判断
+- 等级：S/A/B/C/D
+- 依据：408os 考频、408 大纲位置、真题/章节连接关系
+- 学习策略：深讲 / 标准讲 / 速通 / 概念卡片 / 保底识别
+
 ### 核心概念与深度讲解
 #### 这段在说什么
 ...
@@ -117,8 +134,11 @@ Apply this block to the target heading and every heading present in the extracte
 Every source heading must have:
 
 - non-empty `核心概念与深度讲解` directly before the next source heading;
+- a heading named `重要性判断` before the explanation block;
 - a heading named `408 怎么考`;
 - a heading beginning with `易错点`.
+
+Depth is not uniform. S/A knowledge points get mechanism-level explanation; B points get speed-run support explanation; C/D points get concept-card or recognition-only treatment. Do not delete low-frequency syllabus items, but do not spend high-frequency time on them.
 
 Do not restore old global sections such as `学习目标`, `典型例题`, `本节自测`, or `一分钟总结`. Put examples, summaries, and真题提示 next to the textbook passage they explain.
 

@@ -47,6 +47,27 @@ VALID_LECTURE = """# 1.1 第一节
 不要混淆子节。
 """
 
+SYLLABUS_PREFIX = """# 408考试大纲
+
+本节对应大纲。
+
+## 408os 考频分析
+
+- 数据范围：2009-2026，共 18 年真题统计。
+- 本节相关知识点：第一节，等级 S，题量 10，分值 20，考察年份 8 年。
+- 本节讲解策略：第一节深讲，子节保底识别。
+
+"""
+
+
+def add_importance_judgments(lecture: str) -> str:
+    marker = "### 核心概念与深度讲解"
+    first = "### 重要性判断\n- 等级：S\n- 依据：408os 高频，大纲核心。\n- 学习策略：深讲\n\n"
+    second = "### 重要性判断\n- 等级：C\n- 依据：408os 低频，但属于大纲范围。\n- 学习策略：概念卡片\n\n"
+    before_first, after_first = lecture.split(marker, 1)
+    before_second, after_second = after_first.split(marker, 1)
+    return before_first + first + marker + before_second + second + marker + after_second
+
 
 class LectureValidationTests(unittest.TestCase):
     def test_accepts_complete_inline_lecture(self):
@@ -56,12 +77,26 @@ class LectureValidationTests(unittest.TestCase):
         )
 
     def test_accepts_syllabus_preface_as_first_top_level_heading(self):
-        lecture = "# 408考试大纲\n\n本节对应大纲。\n\n" + VALID_LECTURE
+        lecture = SYLLABUS_PREFIX + add_importance_judgments(VALID_LECTURE)
 
         self.assertEqual(
             validate_lecture(lecture, "1.1", source_content=SOURCE),
             [],
         )
+
+    def test_rejects_new_format_without_frequency_analysis(self):
+        lecture = "# 408考试大纲\n\n本节对应大纲。\n\n" + add_importance_judgments(VALID_LECTURE)
+
+        errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
+
+        self.assertTrue(any("408os 考频分析" in error for error in errors))
+
+    def test_rejects_new_format_without_importance_judgment(self):
+        lecture = SYLLABUS_PREFIX + VALID_LECTURE
+
+        errors = validate_lecture(lecture, "1.1", source_content=SOURCE)
+
+        self.assertTrue(any("重要性判断" in error for error in errors))
 
     def test_rejects_two_top_level_headings_without_syllabus_preface(self):
         lecture = "# 临时说明\n\n不是大纲。\n\n" + VALID_LECTURE

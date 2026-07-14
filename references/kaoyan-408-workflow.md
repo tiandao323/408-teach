@@ -6,17 +6,19 @@ Use this workflow when the user wants systematic 408 self-study, syllabus alignm
 
 1. Locate the subject in `materials`.
 2. Read the syllabus file for the current subject area. Extract only the relevant syllabus bullets.
-3. Use `extract` or `continue` to get the textbook section.
-4. If `source_authority` is `pdf`, use the PDF to verify suspicious OCR, formulas, tables, figure captions, and any passage the user says is wrong.
-5. For conceptual figures, understand the PDF figure and redraw it in the lecture with Mermaid, a table, ASCII art, or a concise text diagram instead of linking the textbook image file.
-6. Look for registered past-paper PDFs whose title matches the chapter or topic. Use them to identify question styles and traps; do not pretend every section has a matching real question if none is found.
-7. Generate the inline lecture following the lecture contract.
-8. Run `finalize`; fix validation errors before advancing progress.
+3. Read `references/408os-importance.md`, then use `https://www.408os.cn/analysis` to identify relevant knowledge-point frequency and assign S/A/B/C/D levels.
+4. Use `extract` or `continue` to get the textbook section.
+5. If `source_authority` is `pdf`, use the PDF to verify suspicious OCR, formulas, tables, figure captions, and any passage the user says is wrong.
+6. For conceptual figures, understand the PDF figure and redraw it in the lecture with Mermaid, a table, ASCII art, or a concise text diagram instead of linking the textbook image file.
+7. Look for registered past-paper PDFs whose title matches the chapter or topic. Use them to identify question styles and traps; do not pretend every section has a matching real question if none is found.
+8. Generate the inline lecture following the lecture contract, including `408os 考频分析` and per-heading `重要性判断`.
+9. Run `finalize`; fix validation errors before advancing progress.
 
 ## Lecture Emphasis
 
 For each source heading, explain:
 
+- how important it is according to 408os frequency, syllabus position, and past-paper evidence;
 - what problem this concept solves;
 - how the mechanism works at the hardware/software boundary;
 - which conditions make a formula or rule valid;
@@ -29,6 +31,12 @@ Prefer concrete decision rules over broad slogans. Examples:
 - For floating point, state normalization, exponent bias, rounding, and overflow/underflow boundaries.
 - For pipeline hazards, identify producer/consumer timing before giving nop or forwarding conclusions.
 - For I/O, distinguish program query, interrupt, DMA, bus transaction, and CPU involvement.
+
+Use depth proportional to importance:
+
+- S/A: full mechanism-level explanation.
+- B: speed-run support explanation.
+- C/D: concept-card or recognition-only treatment, never a long detour.
 
 ## Past-Paper Use
 
